@@ -52,11 +52,16 @@ class CoreOfTheGame
     puts ''
   end
 
-  def output_game_information(iteration)
-    print_postion(@letters_position, :yellow)
-    return unless iteration != 11
+  def output_game_information(iteration, guess_word)
+    add_blank_positions(guess_word) if iteration == 11
 
+    puts "\nThe position of the letters in the word:"
+    print_postion(@letters_position, :yellow)
+
+    puts "\nCorrect letters:"
     print_postion(@correct_letters, :green)
+
+    puts "\nIncorrecy letters:"
     print_postion(@incorrect_letters, :red)
   end
 
@@ -92,11 +97,11 @@ class CoreOfTheGame
 
   def play_game
     guess_word = split_guess_word
-    add_blank_positions(guess_word)
+
     i = 11
     while i.positive?
-      puts "You've left #{i} attempts"
-      output_game_information(i)
+      puts "\nYou've left #{i} attempts"
+      output_game_information(i, guess_word)
       input = player_input
       pcocess_input(guess_word, input)
       break if check_if_game_won
