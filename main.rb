@@ -57,6 +57,8 @@ class CoreOfTheGame
   def output_game_information(iteration, guess_word)
     add_blank_positions(guess_word) if iteration == 11
 
+    puts "\nYou've left #{iteration} attempts"
+
     puts "\nThe position of the letters in the word:"
     print_postion(@letters_position, :yellow)
 
@@ -104,7 +106,6 @@ class CoreOfTheGame
 
     i = 11
     while i.positive?
-      puts "\nYou've left #{i} attempts"
       output_game_information(i, guess_word)
       input = player_input
       pcocess_input(guess_word, input)
