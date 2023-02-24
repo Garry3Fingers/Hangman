@@ -33,6 +33,8 @@ class CoreOfTheGame
     @incorrect_letters = []
   end
 
+  private
+
   def split_guess_word
     @code_word.split(//)
   end
@@ -94,6 +96,8 @@ class CoreOfTheGame
       @incorrect_letters.push(input)
     end
   end
+
+  public
 
   def play_game
     guess_word = split_guess_word
