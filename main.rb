@@ -55,7 +55,7 @@ class CoreOfTheGame
   end
 
   def output_game_information(iteration, guess_word)
-    add_blank_positions(guess_word) if iteration == 11
+    add_blank_positions(guess_word) if @letters_position.empty?
 
     puts "\nYou've left #{iteration} attempts"
 
