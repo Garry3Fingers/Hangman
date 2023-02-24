@@ -99,6 +99,14 @@ class CoreOfTheGame
     end
   end
 
+  def endgame_message
+    if check_if_game_won
+      "\nCode word is '#{@code_word}'. Congratulations! You won!!!"
+    else
+      "\nYou don't have left attempts! Code word was '#{@code_word}'."
+    end
+  end
+
   public
 
   def play_game
@@ -113,7 +121,9 @@ class CoreOfTheGame
 
       i -= 1 unless guess_word.include?(input)
     end
+
+    puts endgame_message
   end
 end
 
-test1 = CoreOfTheGame.new.play_game
+CoreOfTheGame.new.play_game
