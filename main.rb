@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'colorize'
+require 'json'
 
 # This class send random word from the dictionary
 class GuessWord
@@ -77,17 +78,38 @@ class CoreOfTheGame
 
   def player_input
     input = gets.chomp
-    raise InvalidInput, 'You should enter one alphabetic character' unless input.match?(/[[:alpha:]]/)\
-     && input.length == 1
+    input = input.downcase
+    raise InvalidInput, 'You should enter one alphabetic character or "save"' unless input.match?(/[[:alpha:]]/)\
+     && input.length == 1 || input == 'save'
   rescue InvalidInput => e
     puts e
     retry
   else
-    input.downcase
+    input
+  end
+
+  def to_json(*a)
+    {
+      'json_class' => self.class.name,
+      'data' => [@code_word, @letters_position, @correct_letters, @incorrect_letters]
+    }.to_json(*a)
+  end
+
+  def save_game
+    save = to_json
+    dirname = 'save_files'
+    Dir.mkdir(dirname) unless File.exist? dirname
+    puts 'Enter name of the save-file'
+    file_name = gets.chomp
+    save_file = File.open("#{dirname}/#{file_name}", 'w')
+    save_file.puts save
+    save_file.close
   end
 
   def pcocess_input(guess_word, input)
-    if guess_word.include?(input)
+    if input == 'save'
+      save_game
+    elsif guess_word.include?(input)
       @correct_letters.push(input)
       guess_word.each_with_index do |letter, i|
         next unless letter == input
@@ -126,4 +148,14 @@ class CoreOfTheGame
   end
 end
 
-CoreOfTheGame.new.play_game
+# class GameHangman
+#   def initialize
+#     @game_logic = CoreOfTheGame.new.play_game
+#   end
+
+#   def start_game
+
+#   end
+# end
+
+p CoreOfTheGame.new.play_game
