@@ -136,12 +136,12 @@ class CoreOfTheGame
     save_file = File.open('save_files/test1.json', 'r')
     save_data = save_file.read
     save_file.close
-    a = JSON.parse save_data
-    @code_word = a['data'][0]
-    @letters_position = a['data'][1]
-    @correct_letters = a['data'][2]
-    @incorrect_letters = a['data'][3]
-    @rounds = a['data'][4]
+    parse_data = JSON.parse save_data
+    @code_word = parse_data['data'][0]
+    @letters_position = parse_data['data'][1]
+    @correct_letters = parse_data['data'][2]
+    @incorrect_letters = parse_data['data'][3]
+    @rounds = parse_data['data'][4]
   end
 
   def play_game
@@ -171,4 +171,4 @@ end
 #   end
 # end
 
-p CoreOfTheGame.new.test_game
+p CoreOfTheGame.new.play_game
