@@ -107,16 +107,20 @@ class CoreOfTheGame
     save_file.close
   end
 
+  def process_correct_letter(input)
+    @correct_letters.push(input)
+    guess_word.each_with_index do |letter, i|
+      next unless letter == input
+
+      @letters_position[i] = letter
+    end
+  end
+
   def pcocess_input(guess_word, input)
     if input == 'save'
       save_game
     elsif guess_word.include?(input)
-      @correct_letters.push(input)
-      guess_word.each_with_index do |letter, i|
-        next unless letter == input
-
-        @letters_position[i] = letter
-      end
+      process_correct_letter(input)
     else
       @incorrect_letters.push(input)
     end
