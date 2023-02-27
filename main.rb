@@ -32,6 +32,7 @@ class CoreOfTheGame
     @letters_position = []
     @correct_letters = []
     @incorrect_letters = []
+    @rounds = 11
   end
 
   private
@@ -88,11 +89,11 @@ class CoreOfTheGame
     input
   end
 
-  def to_json(*a)
+  def to_json(*args)
     {
       'json_class' => self.class.name,
-      'data' => [@code_word, @letters_position, @correct_letters, @incorrect_letters]
-    }.to_json(*a)
+      'data' => [@code_word, @letters_position, @correct_letters, @incorrect_letters, @rounds]
+    }.to_json(*args)
   end
 
   def save_game
@@ -101,7 +102,7 @@ class CoreOfTheGame
     Dir.mkdir(dirname) unless File.exist? dirname
     puts 'Enter name of the save-file'
     file_name = gets.chomp
-    save_file = File.open("#{dirname}/#{file_name}", 'w')
+    save_file = File.open("#{dirname}/#{file_name}.json", 'w')
     save_file.puts save
     save_file.close
   end
@@ -131,10 +132,22 @@ class CoreOfTheGame
 
   public
 
+  def load_save
+    save_file = File.open('save_files/test1.json', 'r')
+    save_data = save_file.read
+    save_file.close
+    a = JSON.parse save_data
+    @code_word = a['data'][0]
+    @letters_position = a['data'][1]
+    @correct_letters = a['data'][2]
+    @incorrect_letters = a['data'][3]
+    @rounds = a['data'][4]
+  end
+
   def play_game
     guess_word = split_guess_word
 
-    i = 11
+    i = @rounds
     while i.positive?
       output_game_information(i, guess_word)
       input = player_input
@@ -158,4 +171,4 @@ end
 #   end
 # end
 
-p CoreOfTheGame.new.play_game
+p CoreOfTheGame.new.test_game
