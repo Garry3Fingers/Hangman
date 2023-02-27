@@ -100,7 +100,7 @@ class CoreOfTheGame
     save = to_json
     dirname = 'save_files'
     Dir.mkdir(dirname) unless File.exist? dirname
-    puts 'Enter name of the save-file'
+    puts "\nEnter name of the save-file"
     file_name = gets.chomp
     save_file = File.open("#{dirname}/#{file_name}.json", 'w')
     save_file.puts save
