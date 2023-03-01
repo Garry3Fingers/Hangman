@@ -27,12 +27,12 @@ class InvalidInput < StandardError; end
 
 # This class implements gameplay
 class CoreOfTheGame
-  def initialize
-    @code_word = GuessWord.new.random_word
-    @letters_position = []
-    @correct_letters = []
-    @incorrect_letters = []
-    @rounds = 11
+  def initialize(code_word, letters_position, correct_letters, incorrect_letters, rounds)
+    @code_word = code_word
+    @letters_position = letters_position
+    @correct_letters = correct_letters
+    @incorrect_letters = incorrect_letters
+    @rounds = rounds
   end
 
   private
@@ -107,7 +107,7 @@ class CoreOfTheGame
     save_file.close
   end
 
-  def process_correct_letter(input)
+  def process_correct_letter(guess_word, input)
     @correct_letters.push(input)
     guess_word.each_with_index do |letter, i|
       next unless letter == input
@@ -120,7 +120,7 @@ class CoreOfTheGame
     if input == 'save'
       save_game
     elsif guess_word.include?(input)
-      process_correct_letter(input)
+      process_correct_letter(guess_word, input)
     else
       @incorrect_letters.push(input)
     end
@@ -136,43 +136,64 @@ class CoreOfTheGame
 
   public
 
-  def load_save
-    save_file = File.open('save_files/test1.json', 'r')
-    save_data = save_file.read
-    save_file.close
-    parse_data = JSON.parse save_data
-    @code_word = parse_data['data'][0]
-    @letters_position = parse_data['data'][1]
-    @correct_letters = parse_data['data'][2]
-    @incorrect_letters = parse_data['data'][3]
-    @rounds = parse_data['data'][4]
-  end
-
   def play_game
     guess_word = split_guess_word
 
-    i = @rounds
-    while i.positive?
-      output_game_information(i, guess_word)
+    while @rounds.positive?
+      output_game_information(@rounds, guess_word)
       input = player_input
       pcocess_input(guess_word, input)
       break if check_if_game_won
 
-      i -= 1 unless guess_word.include?(input)
+      @rounds -= 1 unless guess_word.include?(input)
     end
 
     puts endgame_message
   end
 end
 
-# class GameHangman
-#   def initialize
-#     @game_logic = CoreOfTheGame.new.play_game
-#   end
+# This class implements the launch or a loading of the game
+class GameHangman
+  def initialize
+    puts 'Welcome to the Hangman! This is a guessing game.'
+    puts 'Type "new" to start a new game or "load" to load a saved game.'
+  end
 
-#   def start_game
+  private
 
-#   end
-# end
+  def player_input
+    input = gets.chomp
+    input = input.downcase
+    check_words = %w[new load]
+    raise InvalidInput, 'You should enter "new" or "load"' unless check_words.include?(input)
+  rescue InvalidInput => e
+    puts e
+    retry
+  else
+    input
+  end
 
-p CoreOfTheGame.new.play_game
+  def load_save
+    save_file = File.open('save_files/test1.json', 'r')
+    save_data = save_file.read
+    save_file.close
+    JSON.parse save_data
+  end
+
+  public
+
+  def start_game
+    answer = player_input
+
+    if answer == 'new'
+      new_game = CoreOfTheGame.new(GuessWord.new.random_word, [], [], [], 11)
+      new_game.play_game
+    elsif answer == 'load'
+      save = load_save
+      save_game = CoreOfTheGame.new(save['data'][0], save['data'][1], save['data'][2], save['data'][3], save['data'][4])
+      save_game.play_game
+    end
+  end
+end
+
+GameHangman.new.start_game
