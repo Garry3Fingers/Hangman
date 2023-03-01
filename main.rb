@@ -174,7 +174,14 @@ class GameHangman
   end
 
   def load_save
-    save_file = File.open('save_files/test1.json', 'r')
+    puts "Select the save file and enter its name.\n\n"
+
+    Dir.glob('save_files/*').each { |name| puts name.delete_prefix('save_files/').delete_suffix('.json') }
+
+    name_file = gets.chomp
+
+    save_file = File.open("save_files/#{name_file}.json", 'r')
+
     save_data = save_file.read
     save_file.close
     JSON.parse save_data
