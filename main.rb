@@ -174,14 +174,19 @@ class GameHangman
   end
 
   def load_save
-    puts "Select the save file and enter its name.\n\n"
+    puts "\nSelect the save file and enter its name.\n\n"
 
-    Dir.glob('save_files/*').each { |name| puts name.delete_prefix('save_files/').delete_suffix('.json') }
+    files = Dir.glob('save_files/*').map { |name| name.delete_prefix('save_files/').delete_suffix('.json') }
+
+    puts files
 
     name_file = gets.chomp
-
+    raise InvalidInput, 'You enter an incorrect file\'s name' unless files.any? { |name| name == name_file }
+  rescue InvalidInput => e
+    puts e
+    retry
+  else
     save_file = File.open("save_files/#{name_file}.json", 'r')
-
     save_data = save_file.read
     save_file.close
     hash_data = JSON.parse save_data
