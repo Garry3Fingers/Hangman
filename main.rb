@@ -198,8 +198,6 @@ class GameHangman
     process_save_file(name_file)
   end
 
-  public
-
   def start_game
     answer = player_input
 
@@ -213,6 +211,20 @@ class GameHangman
       save_game.play_game
     end
   end
+
+  public
+
+  def play_game
+    start_game
+    puts "\nDo you want to play again? Enter 'yes' or whatever."
+    answer = gets.chomp
+
+    if answer.downcase == 'yes'
+      GameHangman.new.play_game
+    else
+      puts "\nThanks for playing!"
+    end
+  end
 end
 
-GameHangman.new.start_game
+GameHangman.new.play_game
