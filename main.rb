@@ -173,6 +173,14 @@ class GameHangman
     input
   end
 
+  def process_save_file(name_file)
+    save_file = File.open("save_files/#{name_file}.json", 'r')
+    save_data = save_file.read
+    save_file.close
+    hash_data = JSON.parse save_data
+    hash_data.to_a[1][1]
+  end
+
   def load_save
     puts "\nSelect the save file and enter its name.\n\n"
 
@@ -186,11 +194,7 @@ class GameHangman
     puts e
     retry
   else
-    save_file = File.open("save_files/#{name_file}.json", 'r')
-    save_data = save_file.read
-    save_file.close
-    hash_data = JSON.parse save_data
-    hash_data.to_a[1][1]
+    process_save_file(name_file)
   end
 
   public
