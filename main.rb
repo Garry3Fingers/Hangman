@@ -184,7 +184,8 @@ class GameHangman
 
     save_data = save_file.read
     save_file.close
-    JSON.parse save_data
+    hash_data = JSON.parse save_data
+    hash_data.to_a[1][1]
   end
 
   public
@@ -192,12 +193,13 @@ class GameHangman
   def start_game
     answer = player_input
 
-    if answer == 'new'
+    case answer
+    when 'new'
       new_game = CoreOfTheGame.new(GuessWord.new.random_word, [], [], [], 11)
       new_game.play_game
-    elsif answer == 'load'
+    when 'load'
       save = load_save
-      save_game = CoreOfTheGame.new(save['data'][0], save['data'][1], save['data'][2], save['data'][3], save['data'][4])
+      save_game = CoreOfTheGame.new(save[0], save[1], save[2], save[3], save[4])
       save_game.play_game
     end
   end
