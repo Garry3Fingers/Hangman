@@ -105,6 +105,7 @@ class CoreOfTheGame
     save_file = File.open("#{dirname}/#{file_name}.json", 'w')
     save_file.puts save
     save_file.close
+    puts "\nYour game has been saved."
   end
 
   def process_correct_letter(guess_word, input)
