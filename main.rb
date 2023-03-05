@@ -37,10 +37,6 @@ class CoreOfTheGame
 
   private
 
-  def split_guess_word
-    @code_word.split(//)
-  end
-
   def add_blank_positions(guess_word)
     i = 0
     while i < guess_word.length
@@ -138,7 +134,7 @@ class CoreOfTheGame
   public
 
   def play_game
-    guess_word = split_guess_word
+    guess_word = @code_word.split(//)
 
     while @rounds.positive?
       output_game_information(@rounds, guess_word)
