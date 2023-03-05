@@ -6,7 +6,7 @@ require 'json'
 # This class send random word from the dictionary
 class GuessWord
   def initialize
-    @dictionary = File.open('google-10000-english-no-swears.txt').readlines
+    @dictionary = File.open('../google-10000-english-no-swears.txt').readlines
   end
 
   private
@@ -95,10 +95,10 @@ class CoreOfTheGame
   def save_game
     save = to_json
     dirname = 'save_files'
-    Dir.mkdir(dirname) unless File.exist? dirname
+    Dir.mkdir("../#{dirname}") unless File.exist?("../#{dirname}")
     puts "\nEnter name of the save-file"
     file_name = gets.chomp
-    save_file = File.open("#{dirname}/#{file_name}.json", 'w')
+    save_file = File.open("../#{dirname}/#{file_name}.json", 'w')
     save_file.puts save
     save_file.close
     puts "\nYour game has been saved."
@@ -181,9 +181,10 @@ class GameHangman
   def load_save
     puts "\nSelect the save file and enter its name.\n\n"
 
-    files = Dir.glob('save_files/*').map { |name| name.delete_prefix('save_files/').delete_suffix('.json') }
+    # Specify your own directory here
+    Dir.chdir('/home/garry3fingers/repos/Hangman/')
 
-    puts files
+    puts files = Dir.glob('save_files/*').map { |name| name.delete_prefix('save_files/').delete_suffix('.json') }
 
     name_file = gets.chomp
     raise InvalidInput, "\nYou are entering an invalid file name" unless files.any? { |name| name == name_file }
