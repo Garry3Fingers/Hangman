@@ -80,7 +80,7 @@ class CoreOfTheGame
   def player_input
     input = gets.chomp
     input = input.downcase
-    raise InvalidInput, 'You should enter one alphabetic character or "save"' unless input.match?(/[[:alpha:]]/)\
+    raise InvalidInput, "\nYou should enter one alphabetic character or 'save'" unless input.match?(/[[:alpha:]]/)\
      && input.length == 1 || input == 'save'
   rescue InvalidInput => e
     puts e
@@ -156,7 +156,7 @@ end
 # This class implements the launch or a loading of the game
 class GameHangman
   def initialize
-    puts 'Welcome to the Hangman! This is a guessing game.'
+    puts "\nWelcome to the Hangman! This is a guessing game."
     puts 'Type "new" to start a new game or "load" to load a saved game.'
   end
 
@@ -166,7 +166,7 @@ class GameHangman
     input = gets.chomp
     input = input.downcase
     check_words = %w[new load]
-    raise InvalidInput, 'You should enter "new" or "load"' unless check_words.include?(input)
+    raise InvalidInput, "\nYou should enter 'new' or 'load'" unless check_words.include?(input)
   rescue InvalidInput => e
     puts e
     retry
@@ -190,7 +190,7 @@ class GameHangman
     puts files
 
     name_file = gets.chomp
-    raise InvalidInput, 'You enter an incorrect file\'s name' unless files.any? { |name| name == name_file }
+    raise InvalidInput, "\nYou are entering an invalid file name" unless files.any? { |name| name == name_file }
   rescue InvalidInput => e
     puts e
     retry
