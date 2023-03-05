@@ -2,7 +2,6 @@
 
 require 'colorize'
 require 'json'
-require 'fileutils'
 
 # This class send random word from the dictionary
 class GuessWord
@@ -96,7 +95,7 @@ class CoreOfTheGame
   def save_game
     save = to_json
     dirname = 'save_files'
-    Dir.mkdir("../#{dirname}") unless File.exist?("../#{dirname}")
+    Dir.mkdir(dirname) unless File.exist? dirname
     puts "\nEnter name of the save-file"
     file_name = gets.chomp
     save_file = File.open("#{dirname}/#{file_name}.json", 'w')
@@ -182,10 +181,9 @@ class GameHangman
   def load_save
     puts "\nSelect the save file and enter its name.\n\n"
 
-    # Specify your own directory here
-    Dir.chdir('/home/garry3fingers/repos/Hangman/')
+    files = Dir.glob('save_files/*').map { |name| name.delete_prefix('save_files/').delete_suffix('.json') }
 
-    puts files = Dir.glob('save_files/*').map { |name| name.delete_prefix('save_files/').delete_suffix('.json') }
+    puts files
 
     name_file = gets.chomp
     raise InvalidInput, "\nYou are entering an invalid file name" unless files.any? { |name| name == name_file }
