@@ -29,7 +29,7 @@ class GameHangman
   end
 
   def process_save_file(name_file)
-    save_file = File.open("save_files/#{name_file}.json", 'r')
+    save_file = File.open("../save_files/#{name_file}.json", 'r')
     save_data = save_file.read
     save_file.close
     hash_data = JSON.parse save_data
@@ -39,10 +39,9 @@ class GameHangman
   def load_save
     puts "\nSelect the save file and enter its name.\n\n"
 
-    # Specify your own directory here
-    Dir.chdir('/home/garry3fingers/repos/Hangman/')
+    files = Dir.glob('save_files/*', base: '..').map { |name| name.delete_prefix('save_files/').delete_suffix('.json') }
 
-    puts files = Dir.glob('save_files/*').map { |name| name.delete_prefix('save_files/').delete_suffix('.json') }
+    puts files
 
     name_file = gets.chomp
     raise InvalidInput, "\nYou are entering an invalid file name" unless files.any? { |name| name == name_file }
