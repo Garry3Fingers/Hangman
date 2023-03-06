@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This class send random word from the dictionary
 class GuessWord
   def initialize
